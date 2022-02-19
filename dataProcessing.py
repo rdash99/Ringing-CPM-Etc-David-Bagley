@@ -7,13 +7,16 @@ cur = db.cursor()
 
 total = 0
 
+
 def createTable():
     try:
-        cur.execute("CREATE TABLE Methods (id integer PRIMARY KEY, library text, title text, name text, stage integer, rows blob)")
+        cur.execute(
+            "CREATE TABLE Methods (id integer PRIMARY KEY, library text, title text, name text, stage integer, rows blob)")
         db.commit()
         print('Table created')
     except:
         pass
+
 
 def dropTable():
     try:
@@ -25,6 +28,8 @@ def dropTable():
 
 
 base_url = 'https://api.complib.org/'
+
+
 def parseCSV(file, total):
     f = pd.read_csv(file)
     keep_col = ['id']
@@ -33,17 +38,19 @@ def parseCSV(file, total):
     for index, rows in new_f.iterrows():
         id = rows.id
         ids.append(id)
-        total +=1
+        total += 1
         proccessData(id, total)
-        #print(entities)
+        # print(entities)
+
+
 def proccessData(id, total):
     url = base_url + 'method/{}/rows'.format(id)
-    #print(url)
+    # print(url)
     try:
         data = requests.get(url).json()
     except:
         data = requests.get(url).json()
-    #print(data)
+    # print(data)
     id = int(data['id'])
     library = data['library']
     title = data['title']
@@ -51,19 +58,22 @@ def proccessData(id, total):
     stage = int(data['stage'])
     rows = str(data['rows'])
     entity = (id, library, title, name, stage, rows)
-    #print(entity)
+    # print(entity)
     storeData(entity, total)
-    #return entity
+    # return entity
+
 
 def storeData(entity, total):
     try:
-        cur.execute("INSERT INTO Methods(id, library, title, name, stage, rows) VALUES(?, ?, ?, ?, ?, ?)", entity)
+        cur.execute(
+            "INSERT INTO Methods(id, library, title, name, stage, rows) VALUES(?, ?, ?, ?, ?, ?)", entity)
         db.commit()
     except:
         pass
     total += 1
-    #print('added')
-    #print(total)
+    # print('added')
+    # print(total)
+
 
 dropTable()
 createTable()
