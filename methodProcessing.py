@@ -38,7 +38,7 @@ def getAllMethods():
     print(count)
     print(len(data['methods']))
 
-    chunks = chunk(data['methods'], 500)
+    chunks = chunk(data['methods'], 600)
     print(len(chunks))
     # print(chunks[0])
     # print(processChunk(chunks[0]))

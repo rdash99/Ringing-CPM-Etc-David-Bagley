@@ -4,13 +4,14 @@ import serial
 
 
 class BellNode (Node):
+    bellDictionary = {}
     last_message = None
     serialPort = None
     serialConnection = None
     callibrationMode = False
     # Python class constructor
 
-    def __init__(self, host, port, id, callibrationMode=False, callback=None, max_connections=0):
+    def __init__(self, host, port, id, callibrationMode, callback=None, max_connections=0):
         super(BellNode, self).__init__(
             host, port, id, callback, max_connections)
         self.callibrationMode = callibrationMode
@@ -30,6 +31,8 @@ class BellNode (Node):
     def node_message(self, connected_node, data):
         print("node_message from " + connected_node.id + ": " + str(data))
         last_message = data
+        if self.callibrationMode and self.id == "main":
+            self.send_to_nodes({"message": "Hi there!"})
 
     def node_disconnect_with_outbound_node(self, connected_node):
         print("node wants to disconnect with other outbound node: " + connected_node.id)

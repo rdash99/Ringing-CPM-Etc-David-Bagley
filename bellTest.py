@@ -2,7 +2,7 @@ from node import BellNode
 import sys
 import time
 
-bellNum = 2500
+bellNum = 12
 
 nodes = []
 
